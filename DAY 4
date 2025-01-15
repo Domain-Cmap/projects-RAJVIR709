@@ -1,0 +1,278 @@
+1. Given a circular integer array nums (i.e., the next element of nums[nums.length - 1] is 
+nums[0]), return the next greater number for every element in nums. 
+The next greater number of a number x is the first greater number to its traversing-order 
+next in the array, which means you could search circularly to find its next greater number. 
+If it doesn't exist, return -1 for this number. 
+Example 1: 
+Input: nums = [1,2,1] 
+Output: [2,-1,2] Code: 
+#include <vector> 
+#include <stack> #include <iostream> using namespace 
+std; vector<int> nextGreaterElements(vector<int> 
+&nums) 
+{ int n = nums.size(); vector<int> 
+result(n, -1); 
+for 
+stack<int> st; 
+(int i = 0; i < 2 * n; ++i) 
+{ 
+while (!st.empty() && nums[st.top()] < nums[i % n])
+{ 
+result[st.top()] = 
+nums[i % n]; 
+} 
+n) 
+if (i < 
+{ 
+st.pop(); 
+st.push(i); 
+} } return result; } int main() { vector<int> 
+nums = {1, 2, 1}; 
+vector<int> result 
+= nextGreaterElements(nums); for (int num : 
+result) 
+{ 
+} 
+cout << num << " "; 
+return 0; 
+}
+2. Given a queue, write a recursive function to reverse it. 
+Standard operations allowed : 
+enqueue(x) : Add an item x to rear of queue. dequeue() : 
+Remove an item from front of queue. empty() : Checks 
+if a queue is empty or not. 
+Examples 1: 
+Input : Q = [5, 24, 9, 6, 8, 4, 1, 8, 3, 6] 
+Output : Q = [6, 3, 8, 1, 4, 8, 6, 9, 24, 5] 
+Explanation : Output queue is the reverse of the input queue. 
+Code:
+#include <iostream> #include <queue> 
+using namespace std; void 
+reverseQueue(queue<int> &q) 
+{ 
+if 
+(q.empty()) 
+{ 
+return; 
+} 
+int frontElement = q.front(); 
+reverseQueue(q); 
+q.push(frontElement); 
+} 
+int main() 
+{ queue<int> q; 
+q.push(5); 
+q.push(24); 
+q.push(9); 
+q.push(6); 
+q.push(8); 
+q.push(4); 
+q.push(1); 
+q.push(8); 
+q.push(3); 
+q.push(6); 
+cout << 
+"Original Queue: "; 
+queue<int> temp = q; 
+while (!temp.empty()) 
+{ 
+cout << temp.front() << " "; 
+temp.pop(); 
+} 
+cout << endl; 
+reverseQueue(q); 
+cout <<"Reversed Queue: "; while 
+(!q.empty()) 
+{  
+cout << q.front() << 
+" "; 
+q.pop(); 
+cout << endl; 
+return 0; } 
+
+3. Given a balanced parentheses string s, return the score of the string. 
+The score of a balanced parentheses string is based on the following rule: 
+"()" has score 1. 
+AB has score A + B, where A and B are balanced parentheses strings. 
+(A) has score 2 * A, where A is a balanced parentheses string. 
+Example 1: 
+Input: s = "()" 
+Output: 1 
+Code: 
+#include <iostream> 
+#include <stack> #include 
+<string> using namespace 
+std; int 
+scoreOfParentheses(string s) 
+{ stack<int> st; 
+for (char c 
+: s) 
+{ if (c == '(') 
+{ 
+st.push(0); 
+} 
+else 
+top = st.top();  
+if (top 
+== 0) 
+{ 
+st.push(1); 
+} 
+else 
+st.pop();  
+{  
+{ 
+st.pop(); 
+int 
+int innerScore = top * 2; 
+st.push(st.empty() ? innerScore : 
+innerScore + st.top());  
+} 
+} }  int 
+score = 0; 
+(!st.empty()) 
+{ 
+while 
+score += st.top(); 
+score; } int main() { 
+st.pop(); 
+string s = "()"; 
+" << s << endl; cout << "Output: " << 
+scoreOfParentheses(s) << endl;  return 0; 
+}
+4. You are given an array of integers nums, there is a sliding window of size k which is 
+moving from the very left of the array to the very right. You can only see the k numbers 
+in the window. Each time the sliding window moves right by one position. 
+Return the max sliding window. 
+Example 1: 
+Input: nums = [1,3,-1,-3,5,3,6,7], 
+k = 3 Output: [3,3,5,5,6,7] 
+Code: 
+#include <iostream> 
+#include <vector> #include <deque> using namespace std; 
+vector<int> maxSlidingWindow(vector<int> &nums, int k) 
+{ deque<int> dq; vector<int> 
+result; 
+++i) 
+{ 
+for (int i = 0; i < nums.size(); 
+if (!dq.empty() && dq.front() == i - k) 
+{ 
+dq.pop_front(); 
+} 
+while (!dq.empty() && nums[dq.back()] < nums[i]) 
+{ 
+} 
+dq.pop_back(); 
+dq.push_back(i); 
+if 
+(i >= k - 1) 
+{ 
+result.push_back(nums[dq.front()]); 
+} 
+} return result; } int main() { vector<int> nums 
+= {1, 3, -1, -3, 5, 3, 6, 7}; 
+int k = 3; 
+result = maxSlidingWindow(nums, k); 
+for (int x : result) 
+{ 
+<< " "; 
+} 
+endl; 
+0; } 
+Output: 
+cout << x 
+cout << 
+return 0;
+
+5. You have an infinite number of stacks arranged in a row and numbered (left to right) 
+from 0, each of the stacks has the same maximum capacity. 
+Implement the DinnerPlates class: 
+DinnerPlates(int capacity) Initializes the object with the maximum capacity of the stacks 
+capacity. 
+void push(int val) Pushes the given integer val into the leftmost stack with a size less than 
+capacity. 
+int pop() Returns the value at the top of the rightmost non-empty stack and removes it 
+from that stack, and returns -1 if all the stacks are empty. 
+int popAtStack(int index) Returns the value at the top of the stack with the given index 
+index and removes it from that stack or returns -1 if the stack with that given index is 
+empty.
+
+Code: 
+
+#include <iostream> 
+#include <vector> 
+#include <stack> #include 
+<set> using namespace 
+std; class 
+DinnerPlates 
+{ private: 
+int 
+capacity; 
+vector<stack<int>> stacks; 
+set<int> available; public: 
+DinnerPlates(int cap) : capacity(cap) {} 
+void push(int val) 
+{ 
+if 
+(available.empty()) 
+{ 
+stacks.push_back(stack<int>()); 
+available.insert(stacks.size() - 1);
+} 
+int idx = *available.begin(); 
+stacks[idx].push(val); 
+if 
+(stacks[idx].size() == capacity) 
+{ 
+available.erase(idx); 
+} } 
+int pop() 
+{ 
+while (!stacks.empty() && stacks.back().empty()) 
+{ 
+stacks.pop_back();  
+if (stacks.empty()) 
+} 
+return -1; 
+stacks.back().top(); 
+stacks.back().pop(); 
+int val = 
+available.insert(stacks.size() - 1); 
+return val; 
+} 
+int popAtStack(int index) 
+{ 
+if (index >= stacks.size() || 
+stacks[index].empty())   
+stacks[index].top(); 
+available.insert(index);  
+return -1; 
+stacks[index].pop(); 
+return val;
+} }; int main() 
+{ 
+DinnerPlates D(2); 
+D.push(1); 
+D.push(2); 
+D.push(3); 
+D.push(4); 
+D.push(5); 
+cout << 
+D.popAtStack(0) << endl; 
+D.push(20); 
+D.push(21);  cout << 
+D.popAtStack(0) << endl; cout << 
+D.popAtStack(2) << endl; cout << 
+D.pop() << endl; 
+D.pop() << endl; 
+D.pop() << endl; 
+D.pop() << endl; 
+D.pop() << endl; 
+} 
+Output: 
+cout << 
+cout << 
+cout << 
+cout << 
+return 0; 
